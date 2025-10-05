@@ -1,1 +1,2 @@
 Feature A content
+Feature B content
