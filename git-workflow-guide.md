@@ -4,8 +4,60 @@
 - Basic Concepts
 - Initial Setup
 - Common Workflow
+- Converting Existing Project to Git
 - Working with Branches
 - Useful Commands Reference
+
+---
+
+## 📦 Converting Existing Project to Git
+
+If you have an existing project on your laptop and want to start using Git:
+
+### Step 1: Navigate to Your Project
+```bash
+cd /path/to/your/project
+```
+
+### Step 2: Initialize Git Repository
+```bash
+git init
+```
+This creates a `.git` folder in your project directory.
+
+### Step 3: Add All Files
+```bash
+git add .
+```
+
+### Step 4: Make Initial Commit
+```bash
+git commit -m "Initial commit"
+```
+
+### Step 5: Create GitHub Repository and Link It
+```bash
+gh repo create project-name --public --source=. --remote=origin
+```
+Options:
+- `--public` or `--private` for repository visibility
+- `--source=.` uses current directory
+- `--remote=origin` sets up the remote connection
+
+### Step 6: Push to GitHub
+```bash
+git push -u origin dev
+```
+The `-u` flag sets upstream tracking for future pushes.
+
+### Optional: Create .gitignore
+Before adding files, create a `.gitignore` to exclude unnecessary files:
+```bash
+echo "node_modules/" >> .gitignore
+echo ".env" >> .gitignore
+echo ".DS_Store" >> .gitignore
+git add .gitignore
+```
 
 ---
 
@@ -26,6 +78,8 @@
 **Origin** → Nickname/alias for your remote repository on GitHub
 
 **Branch** → Separate timeline of commits for working on features
+
+**Main/Dev** → The primary branch (previously called "master", now commonly "main" or "dev")
 
 ---
 
@@ -110,10 +164,18 @@ Note: This only works for files already tracked, not new files.
 
 ### 6. Push to GitHub
 ```bash
-git push origin master
+git push origin dev
 ```
 - `origin` = your GitHub repository (remote)
-- `master` = the branch you're pushing to
+- `dev` = the branch you're pushing to
+
+**First time pushing a branch:** Use `-u` to set upstream tracking:
+```bash
+git push -u origin dev
+```
+After this, you can just use `git push` without specifying origin and branch name.
+
+**What `-u` does:** Creates a tracking relationship between local and remote branch, allowing shortcuts like `git push` and `git pull` without specifying the remote.
 
 ### 7. View Repository Online
 ```bash
@@ -198,15 +260,15 @@ Delete the branch when prompted.
 
 **Switch to target branch and merge:**
 ```bash
-git checkout master
+git checkout dev
 git merge feature-name
 ```
 
-**Fast-forward merge** happens when no conflicts exist - master simply moves forward.
+**Fast-forward merge** happens when no conflicts exist - dev simply moves forward.
 
 **Push to GitHub:**
 ```bash
-git push origin master
+git push origin dev
 ```
 
 **Delete local branch:**
@@ -284,15 +346,15 @@ Shows visual representation of branch merges.
 
 ✅ **Pull before creating** a new branch to start from latest code:
 ```bash
-git checkout master
-git pull origin master
+git checkout dev
+git pull origin dev
 git checkout -b new-feature
 ```
 
-✅ **Regularly sync** feature branches with master:
+✅ **Regularly sync** feature branches with dev:
 ```bash
 git checkout feature-branch
-git merge master
+git merge dev
 ```
 
 ---
@@ -337,7 +399,12 @@ git reset --hard HEAD~1
 
 ### Pulling Changes from GitHub
 ```bash
-git pull origin master
+git pull origin dev
+```
+
+Or after setting upstream with `-u`:
+```bash
+git pull
 ```
 
 ### GitHub CLI Shortcuts
@@ -366,14 +433,14 @@ git add .
 git commit -m "Complete feature implementation"
 
 # 3. Push feature branch
-git push origin new-feature
+git push -u origin new-feature
 
 # 4. Create pull request (via GitHub CLI or web)
 gh pr create
 
 # 5. After approval, merge and clean up
-git checkout master
-git pull origin master
+git checkout dev
+git pull origin dev
 git branch -d new-feature
 git push origin --delete new-feature
 ```
@@ -388,7 +455,7 @@ git push origin --delete new-feature
 
 ✅ **Use branches** for new features or experiments
 
-✅ **Pull before push** to avoid conflicts: `git pull origin master`
+✅ **Pull before push** to avoid conflicts: `git pull origin dev`
 
 ✅ **Never commit** sensitive data (passwords, API keys, etc.)
 
@@ -416,10 +483,32 @@ git checkout correct-branch
 git cherry-pick <commit-hash>
 ```
 
-### Scenario: Need to update branch with latest master
+### Scenario: Need to update branch with latest dev
 ```bash
 git checkout feature-branch
-git merge master
+git merge dev
+```
+
+---
+
+## 🔧 Additional Tips
+
+### Changing Default Branch Name
+If your repository still uses "master", you can rename it to "dev" or "main":
+```bash
+# Rename locally
+git branch -m master dev
+
+# Push renamed branch and set upstream
+git push -u origin dev
+
+# Delete old branch on GitHub
+git push origin --delete master
+```
+
+### Set Default Branch for New Repositories
+```bash
+git config --global init.defaultBranch dev
 ```
 
 ---
