@@ -493,16 +493,27 @@ git merge dev
 
 ## 🔧 Additional Tips
 
-### Changing Default Branch Name
-If your repository still uses "master", you can rename it to "dev" or "main":
+### Renaming Master to Dev on Existing Repository
+
+If you already have a repository with "master" and want to rename it to "dev":
+
+**Step 1: Rename local branch**
 ```bash
-# Rename locally
 git branch -m master dev
+```
 
-# Push renamed branch and set upstream
+**Step 2: Push new dev branch**
+```bash
 git push -u origin dev
+```
 
-# Delete old branch on GitHub
+**Step 3: Change default branch on GitHub**
+```bash
+gh repo edit --default-branch dev
+```
+
+**Step 4: Delete old master branch from GitHub**
+```bash
 git push origin --delete master
 ```
 
@@ -510,6 +521,169 @@ git push origin --delete master
 ```bash
 git config --global init.defaultBranch dev
 ```
+
+---
+
+## 📝 Git Cheatsheet
+
+### Setup & Configuration
+| Command | Description |
+|---------|-------------|
+| `git config --global user.name "Name"` | Set your name |
+| `git config --global user.email "email"` | Set your email |
+| `git config --global init.defaultBranch dev` | Set default branch name |
+| `git config --global --list` | View all settings |
+
+### Repository Basics
+| Command | Description |
+|---------|-------------|
+| `git init` | Initialize new repository |
+| `git clone <url>` | Clone remote repository |
+| `git status` | Check repository status |
+| `git log` | View commit history |
+| `git log --oneline` | Compact commit history |
+| `git log --oneline --graph` | Visual branch history |
+
+### Staging & Committing
+| Command | Description |
+|---------|-------------|
+| `git add <file>` | Stage specific file |
+| `git add .` | Stage all files |
+| `git add *.js` | Stage files by type |
+| `git commit -m "message"` | Commit staged changes |
+| `git commit -am "message"` | Stage + commit tracked files |
+
+### Branching
+| Command | Description |
+|---------|-------------|
+| `git branch` | List all branches |
+| `git branch <name>` | Create new branch |
+| `git checkout <name>` | Switch to branch |
+| `git checkout -b <name>` | Create and switch to branch |
+| `git branch -m <old> <new>` | Rename branch |
+| `git branch -d <name>` | Delete local branch |
+| `git branch -D <name>` | Force delete branch |
+
+### Merging
+| Command | Description |
+|---------|-------------|
+| `git merge <branch>` | Merge branch into current |
+| `git merge --abort` | Cancel merge |
+| `git diff` | View unstaged changes |
+
+### Remote Operations
+| Command | Description |
+|---------|-------------|
+| `git remote -v` | View remote repositories |
+| `git remote add origin <url>` | Add remote repository |
+| `git push origin <branch>` | Push to remote branch |
+| `git push -u origin <branch>` | Push and set upstream |
+| `git push` | Push to upstream (after -u) |
+| `git pull origin <branch>` | Pull from remote branch |
+| `git pull` | Pull from upstream (after -u) |
+| `git fetch` | Download remote changes |
+| `git push origin --delete <branch>` | Delete remote branch |
+
+### Undoing Changes
+| Command | Description |
+|---------|-------------|
+| `git reset <file>` | Unstage file |
+| `git checkout -- <file>` | Discard changes in file |
+| `git reset --soft HEAD~1` | Undo commit, keep changes |
+| `git reset --hard HEAD~1` | Undo commit, discard changes |
+| `git revert <commit>` | Create new commit that undoes |
+| `git commit --amend` | Modify last commit |
+
+### Inspection
+| Command | Description |
+|---------|-------------|
+| `git show <commit>` | Show commit details |
+| `git diff` | Show unstaged changes |
+| `git diff --staged` | Show staged changes |
+| `git blame <file>` | Show who changed each line |
+
+---
+
+## 🐙 GitHub CLI Cheatsheet
+
+### Authentication
+| Command | Description |
+|---------|-------------|
+| `gh auth login` | Login to GitHub |
+| `gh auth status` | Check auth status |
+| `gh auth logout` | Logout from GitHub |
+
+### Repository Management
+| Command | Description |
+|---------|-------------|
+| `gh repo create <name>` | Create new repository |
+| `gh repo create <name> --public` | Create public repository |
+| `gh repo create <name> --private` | Create private repository |
+| `gh repo create <name> --clone` | Create and clone repository |
+| `gh repo create <name> --source=. --remote=origin` | Create from existing project |
+| `gh repo view` | View repository details |
+| `gh repo view --web` | Open repository in browser |
+| `gh repo edit --default-branch <name>` | Change default branch |
+| `gh repo list` | List your repositories |
+| `gh repo clone <user>/<repo>` | Clone repository |
+
+### Pull Requests
+| Command | Description |
+|---------|-------------|
+| `gh pr create` | Create pull request |
+| `gh pr create --draft` | Create draft PR |
+| `gh pr list` | List pull requests |
+| `gh pr view <number>` | View PR details |
+| `gh pr view <number> --web` | Open PR in browser |
+| `gh pr merge <number>` | Merge pull request |
+| `gh pr checkout <number>` | Checkout PR locally |
+| `gh pr close <number>` | Close pull request |
+| `gh pr diff <number>` | View PR diff |
+| `gh pr review <number>` | Review pull request |
+
+### Issues
+| Command | Description |
+|---------|-------------|
+| `gh issue create` | Create new issue |
+| `gh issue list` | List issues |
+| `gh issue view <number>` | View issue details |
+| `gh issue view <number> --web` | Open issue in browser |
+| `gh issue close <number>` | Close issue |
+| `gh issue reopen <number>` | Reopen issue |
+
+### Workflow & Actions
+| Command | Description |
+|---------|-------------|
+| `gh workflow list` | List workflows |
+| `gh workflow view <name>` | View workflow details |
+| `gh run list` | List workflow runs |
+| `gh run view <id>` | View run details |
+| `gh run watch <id>` | Watch run in real-time |
+
+### Releases
+| Command | Description |
+|---------|-------------|
+| `gh release create <tag>` | Create release |
+| `gh release list` | List releases |
+| `gh release view <tag>` | View release details |
+| `gh release download <tag>` | Download release assets |
+
+### Gists
+| Command | Description |
+|---------|-------------|
+| `gh gist create <file>` | Create gist |
+| `gh gist list` | List your gists |
+| `gh gist view <id>` | View gist |
+| `gh gist edit <id>` | Edit gist |
+
+### General
+| Command | Description |
+|---------|-------------|
+| `gh --version` | Check CLI version |
+| `gh --help` | Show help |
+| `gh <command> --help` | Help for specific command |
+| `gh browse` | Open repository in browser |
+| `gh browse --branch <name>` | Open specific branch |
 
 ---
 
