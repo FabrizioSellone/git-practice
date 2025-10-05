@@ -1,2 +1,3 @@
 # Git Practice Project
-## Modification
+## Modification 1
+## Modification 2
