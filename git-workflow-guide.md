@@ -159,25 +159,140 @@ git commit -m "Add new feature"
 git push origin feature-name
 ```
 
-### Switch Back to Main Branch
+**Pro tip:** Push to current branch automatically:
 ```bash
-git checkout master
+git push origin HEAD
 ```
 
-### Merge Branch into Master
+---
+
+## 🔀 Merging Branches
+
+### Method 1: Merge via Pull Request (Team Workflow)
+
+**Step 1: Create Pull Request**
+```bash
+gh pr create
+```
+Follow the prompts to add title and body.
+
+**Step 2: View Pull Request**
+```bash
+gh pr list                # List all PRs
+gh pr view 1              # View PR #1
+gh pr view --web          # Open in browser
+```
+
+**Step 3: Merge Pull Request**
+```bash
+gh pr merge 1
+```
+Choose merge method:
+- **Create a merge commit** - Preserves full history (recommended)
+- **Rebase and merge** - Linear history
+- **Squash and merge** - Combines commits into one
+
+Delete the branch when prompted.
+
+### Method 2: Merge Locally (Quick Workflow)
+
+**Switch to target branch and merge:**
 ```bash
 git checkout master
 git merge feature-name
 ```
 
-### Delete a Branch (after merging)
+**Fast-forward merge** happens when no conflicts exist - master simply moves forward.
+
+**Push to GitHub:**
+```bash
+git push origin master
+```
+
+**Delete local branch:**
 ```bash
 git branch -d feature-name
 ```
 
-### Delete Remote Branch
+---
+
+## ⚠️ Handling Merge Conflicts
+
+Conflicts occur when the same file is modified differently in two branches.
+
+### Identifying Conflicts
 ```bash
-git push origin --delete feature-name
+git merge feature-branch
+# Output: CONFLICT (content): Merge conflict in filename.txt
+```
+
+### Viewing Conflict
+```bash
+cat filename.txt
+```
+You'll see:
+```
+<<<<<<< HEAD
+Your current branch content
+=======
+Incoming branch content
+>>>>>>> feature-branch
+```
+
+### Resolving Conflicts
+
+**Step 1: Edit the file**
+Remove conflict markers and keep desired content:
+```bash
+nano filename.txt
+# Or manually edit to combine or choose content
+```
+
+**Step 2: Mark as resolved**
+```bash
+git add filename.txt
+```
+
+**Step 3: Complete the merge**
+```bash
+git commit -m "Merge feature-branch: Resolve conflicts"
+```
+
+### Abort a Merge
+If you want to cancel the merge:
+```bash
+git merge --abort
+```
+
+### View Merge History
+```bash
+git log --oneline --graph
+```
+Shows visual representation of branch merges.
+
+---
+
+## 🎯 Branch Best Practices
+
+✅ **Always create a branch** for new features or fixes
+
+✅ **Use descriptive names** like `add-login-page` or `fix-navbar-bug`
+
+✅ **Keep branches focused** - one feature per branch
+
+✅ **Merge or delete** branches after they're done
+
+✅ **Pull before creating** a new branch to start from latest code:
+```bash
+git checkout master
+git pull origin master
+git checkout -b new-feature
+```
+
+✅ **Regularly sync** feature branches with master:
+```bash
+git checkout feature-branch
+git merge master
 ```
 
 ---
